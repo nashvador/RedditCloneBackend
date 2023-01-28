@@ -1,0 +1,32 @@
+{
+  "name": "redcbackend",
+  "version": "1.0.0",
+  "description": "backend of reddit clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "dev": "ts-node-dev index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nashvador/RedditCloneBackend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nashvador/RedditCloneBackend/issues"
+  },
+  "homepage": "https://github.com/nashvador/RedditCloneBackend#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.16",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.32.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
