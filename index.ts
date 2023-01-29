@@ -1,10 +1,15 @@
 import express from "express";
-const app = express();
 import {connectionToDatabase } from "./util/db";
 import {PORT} from "./util/config";
-import { router } from "./controllers/test";
+import {testRouter} from "./controllers/test";
+import cors from 'cors';
 
+const app = express();
 
+app.use(cors())
+app.use(express.json());
+
+app.use("/api/test", testRouter)
 
 const start = async () => {
     await connectionToDatabase();

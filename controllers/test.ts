@@ -1,10 +1,10 @@
 import { Router } from "express";
-const router = Router()
+const testRouter = Router()
 
 
-router.get("/", async(_req, res) => {
+testRouter.get("/", async(_req, res) => {
     res.send("hello")
 })
 
 
-export {router}
+export {testRouter}
