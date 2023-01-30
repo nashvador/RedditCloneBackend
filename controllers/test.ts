@@ -3,7 +3,7 @@ const testRouter = Router()
 
 
 testRouter.get("/", async(_req, res) => {
-    res.send("hello")
+    res.send("hello hi ")
 })
 
 
