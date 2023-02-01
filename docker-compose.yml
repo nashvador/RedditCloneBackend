@@ -1,8 +1,8 @@
 version: "3.8"
 services:
-  nsp_backend:
-    container_name: nsp_backend
-    image: francescoxx/nsp-template:0.0.2
+  redc_backend:
+    container_name: redc_backend
+    image: nashvador/redc-backend:latest
     build:
       context: .
     ports:
@@ -11,21 +11,21 @@ services:
       - EXTERNAL_PORT=3001
       - PGUSER=francesco
       - PGPASSWORD=12345
-      - PGDATABASE=nps_database
-      - PGHOST=nsp_db # NAME OF THE SERVICE
+      - PGDATABASE=redc_database
+      - PGHOST=redc_db 
     depends_on:
-      - nsp_db
+      - redc_db
     volumes:
       - ./:/usr/src/app
-  nsp_db:
-    container_name: nsp_db
+  redc_db:
+    container_name: redc_db
     image: "postgres:12"
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_USER=francesco
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=nps_database
+      - POSTGRES_DB=redc_database
     volumes:
       - nps_data:/var/lib/postgresql/data
 volumes:
