@@ -20,6 +20,24 @@ User.init(  {
     },
     passwordHash: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tag: {
+      type: DataTypes.STRING,
+    },
+    postId : {
+      type: DataTypes.INTEGER,
+      references: {
+          model: 'post',
+          key: 'id'
+      }
+  },
+    commentId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "comment",
+        key: 'id'
+      }
     }
   },
   {
@@ -28,3 +46,5 @@ User.init(  {
     timestamps: true,
     modelName: "user",
   })
+
+  export {User}
