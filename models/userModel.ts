@@ -18,13 +18,21 @@ User.init(  {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    passwordHash: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     tag: {
       type: DataTypes.STRING,
     },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+  },
+  updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,},
+
     postId : {
       type: DataTypes.INTEGER,
       references: {
@@ -45,6 +53,13 @@ User.init(  {
     underscored: true,
     timestamps: true,
     modelName: "user",
+    
   })
+
+  User.prototype.toJSON =  function () {
+    let values = Object.assign({}, this.get());
+    delete values.password;
+    return values;
+  }
 
   export {User}

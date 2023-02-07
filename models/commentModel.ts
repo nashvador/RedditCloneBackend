@@ -17,6 +17,14 @@ Comment.init(  {
     upVotes: {
         type: DataTypes.INTEGER
     },
+    createdAt: {
+        field: 'created_at',
+        type: DataTypes.DATE,
+    },
+    updatedAt: {
+        field: 'updated_at',
+        type: DataTypes.DATE,},
+  
     userId : {
       type: DataTypes.INTEGER,
       references: {

@@ -20,10 +20,25 @@ Post.init(  {
     postContent: {
         type: DataTypes.TEXT
     },
+    createdAt: {
+      field: 'created_at',
+      type: DataTypes.DATE,
+  },
+  updatedAt: {
+      field: 'updated_at',
+      type: DataTypes.DATE,},
+
     userId : {
       type: DataTypes.INTEGER,
       references: {
         model: 'user',
+        key: 'id'
+      }
+    },
+    commentId : {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'comment',
         key: 'id'
       }
     }
