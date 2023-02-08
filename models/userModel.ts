@@ -1,7 +1,13 @@
+import { LargeNumberLike } from "crypto";
 import {Model, DataTypes} from "sequelize"
 import { sequelize } from "../util/db"
 
-class User extends Model {}
+class User extends Model {
+  password: string;
+  username: string;
+  name: string
+  id: number;
+}
 
 User.init(  {
     id: {
@@ -28,25 +34,12 @@ User.init(  {
     createdAt: {
       field: 'created_at',
       type: DataTypes.DATE,
-  },
+    },
   updatedAt: {
       field: 'updated_at',
-      type: DataTypes.DATE,},
+      type: DataTypes.DATE,
+    },
 
-    postId : {
-      type: DataTypes.INTEGER,
-      references: {
-          model: 'post',
-          key: 'id'
-      }
-  },
-    commentId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "comment",
-        key: 'id'
-      }
-    }
   },
   {
     sequelize,
@@ -55,6 +48,7 @@ User.init(  {
     modelName: "user",
     
   })
+
 
   User.prototype.toJSON =  function () {
     let values = Object.assign({}, this.get());

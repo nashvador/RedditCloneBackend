@@ -3,6 +3,7 @@ import {connectionToDatabase } from "./util/db";
 import {PORT} from "./util/config";
 import {testRouter} from "./controllers/test";
 import { userRouter } from "./controllers/userRouter";
+import { loginRouter } from "./controllers/loginRouter";
 import cors from 'cors';
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api/test", testRouter)
 app.use("/api/users", userRouter)
+app.use("/api/login", loginRouter)
 
 
 const start = async () => {
