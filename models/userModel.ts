@@ -31,6 +31,14 @@ User.init(  {
     tag: {
       type: DataTypes.STRING,
     },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     createdAt: {
       field: 'created_at',
       type: DataTypes.DATE,
