@@ -6,5 +6,4 @@ testRouter.get("/", async(_req, res) => {
     res.send("hello hi")
 })
 
-
 export {testRouter}
