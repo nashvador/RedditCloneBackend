@@ -4,7 +4,7 @@ import {PORT} from "./util/config";
 import {testRouter} from "./controllers/test";
 import { userRouter } from "./controllers/userRouter";
 import { loginRouter } from "./controllers/loginRouter";
-import { errorHandler, requestLogger, unknownEndpoint } from "./util/middleware";
+import { errorHandler, requestLogger, tokenExtractor, unknownEndpoint, userExtractor } from "./util/middleware";
 import cors from 'cors';
 
 const app = express();
@@ -13,6 +13,8 @@ app.use(cors())
 app.use(express.json());
 
 app.use(requestLogger);
+app.use(tokenExtractor);
+app.use(userExtractor);
 
 app.use("/api/test", testRouter)
 app.use("/api/users", userRouter)

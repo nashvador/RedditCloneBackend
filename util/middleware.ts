@@ -3,6 +3,17 @@ import jwt from "jsonwebtoken"
 import { User } from "../models/userModel"
 import {info, error} from "./logger"
 
+
+ export interface GetUserAuthInfoRequest extends Request {
+  user?: User | null;
+  token?: string;
+}
+
+interface JwtPayload {
+  id: string
+}
+
+
 const requestLogger = (
     request: Request,
     _response: Response,
@@ -12,6 +23,37 @@ const requestLogger = (
     info("Path:  ", request.path);
     info("Body:  ", request.body);
     info("---");
+    next();
+  };
+
+  const tokenExtractor = (
+    request: GetUserAuthInfoRequest,
+    _response: Response,
+    next: NextFunction
+  ) => {
+    const authorization = request.get("authorization");
+    if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+      request.token = authorization.substring(7);
+    }
+  
+    next();
+  };
+  
+
+  const userExtractor = async (
+    request: GetUserAuthInfoRequest,
+    response: Response,
+    next: NextFunction
+  ) => {
+    if (request.token) {
+      console.log(request.token)
+      const decodedToken = jwt.verify(request.token, process.env.SECRET!) as JwtPayload;
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: "token missing or invalid" });
+      }
+      request.user = await User.findOne({where: {id: decodedToken.id}});
+    }
+  
     next();
   };
 
@@ -27,7 +69,7 @@ const requestLogger = (
     response: Response,
     next: NextFunction
   ) => {
-    error(error.message);
+    console.log(error.message);
   
     if (error.name === "CastError") {
       return response.status(400).send({ error: "malformatted id" });
@@ -42,8 +84,10 @@ const requestLogger = (
         error: "token expired",
       });
     }
-  
     next(error);
   };
 
-  export {requestLogger, errorHandler, unknownEndpoint}
+
+
+
+  export {requestLogger, errorHandler, unknownEndpoint, userExtractor, tokenExtractor}
