@@ -12,6 +12,16 @@ postRouter.get("/", async (_request: Request, response: Response) => {
     response.json(posts)
 })
 
+postRouter.get("/:id", async (request: Request, response: Response) => {
+    const posts = await Post.findByPk(request.params.id, { attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: ['name']
+    },})
+    response.json(posts)
+})
+
+
 postRouter.post("/", async (request: GetUserAuthInfoRequest, response: Response) => {
     const body = request.body
     const user = request.user
@@ -33,7 +43,6 @@ postRouter.delete("/:id", async (request: GetUserAuthInfoRequest, response: Resp
     if (user?.dataValues.admin) {
         await post?.destroy();
         response.status(404).end();
-
     }
     if (post?.userId === user?.dataValues.id) {
         await post?.destroy()
@@ -44,17 +53,18 @@ postRouter.delete("/:id", async (request: GetUserAuthInfoRequest, response: Resp
 postRouter.put("/:id", async (request: GetUserAuthInfoRequest, response: Response) => {
     const post : Post | null = await Post.findByPk(request.params.id)
     const user = request.user
+    const {content} = request.body
 
-    if (user?.dataValues.admin) {
-        await post?.destroy();
-        response.status(404).end();
+    if (post && post?.userId === user?.dataValues.id) {
+        post.postContent = content
+        await post.save()
+        response.json(post)
+    }
 
-    }
-    if (post?.userId === user?.dataValues.id) {
-        await post?.destroy()
-        response.status(404).end();
-    }
+
 })
+
+
 
 
 
