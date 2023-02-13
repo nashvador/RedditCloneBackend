@@ -1,10 +1,13 @@
 import { Router, Request, Response } from "express";
-import { User } from "../models/userModel";
+import { User } from "../models";
+import {Post} from "../models/postModel"
 const bcrypt = require("bcryptjs")
 const userRouter = Router()
 
 userRouter.get('/', async (_request: Request, response: Response) => {
-    const users = await User.findAll()
+    const users = await User.findAll({    include: {
+      model: Post
+    }})
     response.json(users)
   })
 

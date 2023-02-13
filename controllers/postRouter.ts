@@ -1,11 +1,14 @@
 import { Router, Request, Response } from "express";
-import { User } from "../models/userModel";
+import { User, Post } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
-import {Post} from "../models/postModel"
 const postRouter = Router()
 
 postRouter.get("/", async (_request: Request, response: Response) => {
-    const posts = await Post.findAll({})
+    const posts = await Post.findAll({ attributes: { exclude: ['userId'] },
+    include: {
+      model: User,
+      attributes: ['name']
+    },})
     response.json(posts)
 })
 
@@ -35,7 +38,21 @@ postRouter.delete("/:id", async (request: GetUserAuthInfoRequest, response: Resp
     if (post?.userId === user?.dataValues.id) {
         await post?.destroy()
         response.status(404).end();
+    }
+})
 
+postRouter.put("/:id", async (request: GetUserAuthInfoRequest, response: Response) => {
+    const post : Post | null = await Post.findByPk(request.params.id)
+    const user = request.user
+
+    if (user?.dataValues.admin) {
+        await post?.destroy();
+        response.status(404).end();
+
+    }
+    if (post?.userId === user?.dataValues.id) {
+        await post?.destroy()
+        response.status(404).end();
     }
 })
 
