@@ -4,6 +4,7 @@ import {PORT} from "./util/config";
 import {testRouter} from "./controllers/test";
 import { userRouter } from "./controllers/userRouter";
 import { loginRouter } from "./controllers/loginRouter";
+import { postRouter } from "./controllers/postRouter";
 import { errorHandler, requestLogger, tokenExtractor, unknownEndpoint, userExtractor } from "./util/middleware";
 import cors from 'cors';
 
@@ -19,6 +20,7 @@ app.use(userExtractor);
 app.use("/api/test", testRouter)
 app.use("/api/users", userRouter)
 app.use("/api/login", loginRouter)
+app.use("/api/post", postRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)

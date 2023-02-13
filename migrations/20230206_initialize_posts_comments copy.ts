@@ -4,30 +4,34 @@ module.exports = {
     up: async ({ context: queryInterface } : {context: any}) => {
       await queryInterface.createTable('posts', {
         id: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        postTitle: {
+          type: DataTypes.STRING,
+          unique: true,
+          allowNull: false,
+          field: 'post_title',
+    
+        },
+        upVotes: {
             type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-          },
-          postTitle: {
-            type: DataTypes.STRING,
-            unique: true,
+            field: 'up_votes'
+        },
+        postContent: {
+            type: DataTypes.TEXT,
             allowNull: false,
-          },
-          upVotes: {
-              type: DataTypes.INTEGER
-          },
-          postContent: {
-              type: DataTypes.TEXT
-          },
-          created_at: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            
-           },
-           updated_at: {
-            allowNull: false,
-            type: DataTypes.DATE,
-           },
+            field: 'post_content'
+        },
+        createdAt: {
+          field: 'created_at',
+          type: DataTypes.DATE,
+      },
+      updatedAt: {
+          field: 'updated_at',
+          type: DataTypes.DATE,
+        },
       
       })
       await queryInterface.createTable('users', {
@@ -65,26 +69,27 @@ module.exports = {
       })
       await queryInterface.createTable('comments', {
         id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-          },
-          commentText: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-          },
-          upVotes: {
-              type: DataTypes.INTEGER
-          },    
-          created_at: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        commentText: {
+          type: DataTypes.STRING,
+          unique: true,
+          allowNull: false,
+          field: 'comment_text'
+        },
+        upVotes: {
+            type: DataTypes.INTEGER
+        },
+        createdAt: {
+            field: 'created_at',
             type: DataTypes.DATE,
-            allowNull: false,
-           },
-           updated_at: {
-            allowNull: false,
-            type: DataTypes.DATE,
-           },
+        },
+        updatedAt: {
+            field: 'updated_at',
+            type: DataTypes.DATE,},
+      
       
       })
       await queryInterface.addColumn('posts', 'user_id', {

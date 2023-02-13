@@ -13,6 +13,7 @@ Comment.init(  {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
+      field: 'comment_text'
     },
     upVotes: {
         type: DataTypes.INTEGER
