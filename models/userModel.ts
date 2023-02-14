@@ -7,6 +7,9 @@ class User extends Model {
   username: string;
   name: string
   id: number;
+  disabled: boolean;
+  admin: boolean;
+  tag: string;
 }
 
 User.init(  {

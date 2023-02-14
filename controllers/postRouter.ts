@@ -7,7 +7,7 @@ postRouter.get("/", async (_request: Request, response: Response) => {
     const posts = await Post.findAll({ attributes: { exclude: ['userId'] },
     include: {
       model: User,
-      attributes: ['name']
+      attributes: ['username']
     },})
     response.json(posts)
 })
@@ -16,7 +16,7 @@ postRouter.get("/:id", async (request: Request, response: Response) => {
     const posts = await Post.findByPk(request.params.id, { attributes: { exclude: ['userId'] },
     include: {
       model: User,
-      attributes: ['name']
+      attributes: ['username']
     },})
     response.json(posts)
 })

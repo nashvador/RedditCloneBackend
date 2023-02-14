@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
-import { User } from "../models";
-import {Post} from "../models/postModel"
+import { User, Post } from "../models";
+import { GetUserAuthInfoRequest } from "../util/middleware";
 const bcrypt = require("bcryptjs")
 const userRouter = Router()
 
 userRouter.get('/', async (_request: Request, response: Response) => {
-    const users = await User.findAll({    include: {
+    const users = await User.findAll({ include: {
       model: Post
     }})
     response.json(users)
@@ -44,6 +44,51 @@ userRouter.post('/', async (request: Request, response: Response) => {
   
   response.json(savedUser)
 
+})
+
+userRouter.put('/:id/disableAccount', async (request: GetUserAuthInfoRequest, response: Response) => {
+  const userToDisable = await User.findByPk(request.params.id)
+  const userRequesting = request.user
+
+  
+  if (userToDisable) {
+  if (userRequesting?.dataValues.admin || userRequesting?.dataValues.id === userToDisable.id) {
+    userToDisable.disabled = !userToDisable?.disabled
+    await userToDisable.save()
+    response.json(userToDisable)
+  } else {response.status(400).json({error: ""})}
+} else {
+  response.status(400).json({error: "User does not exist"})
+}
+
+})
+
+userRouter.put('/:id/addTag', async (request: GetUserAuthInfoRequest, response: Response) => {
+  const userToAddTag = await User.findByPk(request.params.id)
+  const userRequesting = request.user
+  const tag = request.body.tag
+  
+  if (userToAddTag && userToAddTag?.id == userRequesting?.dataValues.id) {
+    userToAddTag.tag = tag
+    await userToAddTag.save()
+    response.json(userToAddTag)
+  } else {
+  response.status(400).json({error: "User does not exist"})
+}
+})
+
+userRouter.put('/:id/addAdminStatus', async (request: GetUserAuthInfoRequest, response: Response) => {
+  const userToAddTag = await User.findByPk(request.params.id)
+  const userRequesting = request.user
+  const tag = request.body.tag
+  
+  if (userToAddTag && userToAddTag?.id == userRequesting?.dataValues.id) {
+    userToAddTag.tag = tag
+    await userToAddTag.save()
+    response.json(userToAddTag)
+  } else {
+  response.status(400).json({error: "User does not exist"})
+}
 })
 
 
