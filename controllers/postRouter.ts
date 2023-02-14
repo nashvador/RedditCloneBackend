@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { User, Post } from "../models";
+import { User, Post, Comment } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
 const postRouter = Router()
 
@@ -14,10 +14,14 @@ postRouter.get("/", async (_request: Request, response: Response) => {
 
 postRouter.get("/:id", async (request: Request, response: Response) => {
     const posts = await Post.findByPk(request.params.id, { attributes: { exclude: ['userId'] },
-    include: {
-      model: User,
-      attributes: ['username']
-    },})
+    include: [{
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['username']
+        }]
+      }]
+})
     response.json(posts)
 })
 

@@ -16,7 +16,9 @@ Comment.init(  {
       field: 'comment_text'
     },
     upVotes: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        field: "up_votes"
     },
     createdAt: {
         field: 'created_at',
