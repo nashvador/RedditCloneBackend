@@ -13,7 +13,16 @@ commentRouter.post('/postId/:id', async (request: GetUserAuthInfoRequest, respon
     response.json(newComment)
 })
 
+commentRouter.post('/replyId/:id', async (request: GetUserAuthInfoRequest, response: Response) => {
+    const commentToRespondTo = await Comment.findByPk(request.params.id)
+    const commentToRespondToId = commentToRespondTo?.id
+    const postId = commentToRespondTo?.postId
+    const userId = request.user?.dataValues.id
+    const {comment} = request.body
 
+    const newComment = await Comment.create({commentText: comment, postId: postId, userId: userId, commentRespondToId: commentToRespondToId})
+    response.json(newComment)
+})
 
 
 

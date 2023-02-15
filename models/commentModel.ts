@@ -1,7 +1,10 @@
 import {Model, DataTypes} from "sequelize"
 import { sequelize } from "../util/db"
 
-class Comment extends Model {}
+class Comment extends Model {
+  postId: number;
+  id: number;
+}
 
 Comment.init(  {
     id: {
@@ -41,6 +44,15 @@ Comment.init(  {
             model: 'post',
             key: 'id'
         }
+    },
+    commentRespondToId: {
+      type: DataTypes.INTEGER,
+      field: "comment_respond_to_id",
+      references: {
+        model: 'comment',
+        key: 'id'
+      }
+      
     }
   },
   {

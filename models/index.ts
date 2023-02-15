@@ -11,4 +11,7 @@ Comment.belongsTo(User)
 Post.hasMany(Comment)
 Comment.belongsTo(Post)
 
+// Comment.hasMany(Comment)
+
+
 export {User, Post, Comment}
