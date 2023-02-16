@@ -39,6 +39,7 @@ Post.init(  {
       field: 'updated_at',
       type: DataTypes.DATE,
     },
+    
     userId : {
       type: DataTypes.INTEGER,
       references: {
