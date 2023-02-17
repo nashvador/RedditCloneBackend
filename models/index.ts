@@ -15,7 +15,11 @@ Saved.belongsTo(User)
 Post.hasMany(Comment)
 Comment.belongsTo(Post)
 
-// Comment.hasMany(Comment)
+Comment.hasMany(Saved)
+Saved.belongsTo(Comment)
+
+Post.hasMany(Saved)
+Saved.belongsTo(Post)
 
 
 export {User, Post, Comment, Saved}

@@ -5,7 +5,10 @@ const savedRouter = Router()
 
 savedRouter.get("/", async (request: GetUserAuthInfoRequest, response: Response) => {
     const userId = request.user?.dataValues.id
-    const savedPostsAndComments = await Saved.findAll({where: {userId: userId}, order: [['createdAt','DESC']]})
+
+    const savedPostsAndComments = await Saved.findAll({where: {userId: userId}, order: [['createdAt','DESC']], include: [{
+        model: Comment
+    }, {model: Post}]})
     response.json(savedPostsAndComments)
 })
 
@@ -16,6 +19,16 @@ savedRouter.post("/commentId/:id", async (request: GetUserAuthInfoRequest, respo
 
     response.json(savedComment)
 })
+
+
+savedRouter.post("/postId/:id", async (request: GetUserAuthInfoRequest, response: Response) => {
+    const postId = request.params.id
+    const userId = request.user?.dataValues.id
+    const savedComment = await Saved.create({userId: userId, postId: postId})
+
+    response.json(savedComment)
+})
+
 
 
 export {savedRouter}
