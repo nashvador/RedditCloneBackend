@@ -7,8 +7,8 @@ savedRouter.get("/", async (request: GetUserAuthInfoRequest, response: Response)
     const userId = request.user?.dataValues.id
 
     const savedPostsAndComments = await Saved.findAll({where: {userId: userId}, order: [['createdAt','DESC']], include: [{
-        model: Comment
-    }, {model: Post}]})
+        model: Comment, include: [{model: User}]
+    }, {model: Post, include: [{model: User}]}]})
     response.json(savedPostsAndComments)
 })
 
