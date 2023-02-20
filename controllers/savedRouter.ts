@@ -29,6 +29,17 @@ savedRouter.post("/postId/:id", async (request: GetUserAuthInfoRequest, response
     response.json(savedComment)
 })
 
+savedRouter.delete("/:id", async (request: GetUserAuthInfoRequest, response: Response) => {
+    const savedId = await Saved.findByPk(request.params.id)
+    const userId = request.user?.dataValues.id
+
+    if (savedId?.userId === userId && savedId) {
+        await savedId.destroy()
+        response.status(404).end();
+    }
+    response.json(savedId)
+})
+
 
 
 export {savedRouter}

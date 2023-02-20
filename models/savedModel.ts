@@ -1,7 +1,11 @@
 import {Model, DataTypes} from "sequelize"
 import { sequelize } from "../util/db"
 
-class Saved extends Model{}
+class Saved extends Model{
+  id: number;
+  userId: number;
+  
+}
 
 Saved.init({
     id: {

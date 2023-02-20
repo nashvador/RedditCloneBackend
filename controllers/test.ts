@@ -4,7 +4,6 @@ const testRouter = Router()
 
 
 testRouter.get("/", async(req: GetUserAuthInfoRequest, res) => {
-    console.log(req.user)
     res.send("hello hi")
 })
 
