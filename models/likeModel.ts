@@ -1,7 +1,9 @@
 import {Model, DataTypes} from "sequelize"
 import { sequelize } from "../util/db"
 
-class Like extends Model {}
+class Like extends Model {
+    likeOrDislike: boolean;
+}
 
 Like.init({
     id: {
@@ -11,15 +13,8 @@ Like.init({
     },
     likeOrDislike: {
         field: 'like_or_dislike',
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        validate: {
-            isZeroOrOne(value: number){
-                if (value < -1 || value > 1){
-                    throw new Error('Values are not')
-                }
-            }
-        }
     },
     createdAt: {
         field: 'created_at',

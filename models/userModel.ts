@@ -46,10 +46,20 @@ User.init(  {
       field: 'created_at',
       type: DataTypes.DATE,
     },
-  updatedAt: {
+    updatedAt: {
       field: 'updated_at',
       type: DataTypes.DATE,
     },
+    commentKarma: {
+      field: 'comment_karma',
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    },
+    postKarma: {
+      field: 'post_karma',
+      defaultValue: 0,
+      type: DataTypes.INTEGER
+    }
 
   },
   {

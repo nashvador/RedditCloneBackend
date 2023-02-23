@@ -7,6 +7,7 @@ import { loginRouter } from "./controllers/loginRouter";
 import { postRouter } from "./controllers/postRouter";
 import { commentRouter } from "./controllers/commentRouter";
 import { savedRouter } from "./controllers/savedRouter";
+import { likeRouter } from "./controllers/likeRouter";
 import { errorHandler, requestLogger, tokenExtractor, unknownEndpoint, userExtractor } from "./util/middleware";
 import cors from 'cors';
 
@@ -25,6 +26,7 @@ app.use("/api/login", loginRouter)
 app.use("/api/post", postRouter)
 app.use("/api/comment", commentRouter)
 app.use("/api/saved", savedRouter)
+app.use("/api/like", likeRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
