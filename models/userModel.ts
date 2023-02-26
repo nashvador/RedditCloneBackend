@@ -10,6 +10,7 @@ class User extends Model {
   disabled: boolean;
   admin: boolean;
   tag: string;
+  postKarma: number;
 }
 
 User.init(  {
