@@ -1,7 +1,7 @@
 import express from "express";
 import {connectionToDatabase } from "./util/db";
 import {PORT} from "./util/config";
-import {testRouter} from "./controllers/test";
+import {welcomeRouter} from "./controllers/welcomeRouter";
 import { userRouter } from "./controllers/userRouter";
 import { loginRouter } from "./controllers/loginRouter";
 import { postRouter } from "./controllers/postRouter";
@@ -20,7 +20,7 @@ app.use(requestLogger);
 app.use(tokenExtractor);
 app.use(userExtractor);
 
-app.use("/api/test", testRouter)
+app.use("/", welcomeRouter)
 app.use("/api/users", userRouter)
 app.use("/api/login", loginRouter)
 app.use("/api/post", postRouter)
