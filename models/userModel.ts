@@ -11,6 +11,7 @@ class User extends Model {
   admin: boolean;
   tag: string;
   postKarma: number;
+  commentKarma: number;
 }
 
 User.init(  {

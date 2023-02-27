@@ -4,6 +4,8 @@ import { sequelize } from "../util/db"
 class Comment extends Model {
   postId: number;
   id: number;
+  upVotes: number;
+  userId: number;
 }
 
 Comment.init(  {
