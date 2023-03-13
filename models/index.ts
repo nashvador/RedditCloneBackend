@@ -3,6 +3,7 @@ import { Post } from "./postModel";
 import { Comment } from "./commentModel";
 import { Saved } from "./savedModel";
 import { Like } from "./likeModel";
+import { Message } from "./messageModel";
 
 User.hasMany(Post)
 Post.belongsTo(User)
@@ -31,5 +32,7 @@ Like.belongsTo(Comment)
 Post.hasMany(Like)
 Like.belongsTo(Post)
 
+User.hasMany(Message)
+Message.belongsTo(User)
 
-export {User, Post, Comment, Saved, Like}
+export {User, Post, Comment, Saved, Like, Message}

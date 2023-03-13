@@ -153,12 +153,6 @@ likeRouter.post("/commentIdDownVote/:id", async (request: GetUserAuthInfoRequest
     }
 })
 
-
-
-
-
-
-
 export {likeRouter}
 
 

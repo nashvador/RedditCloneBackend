@@ -69,8 +69,4 @@ postRouter.put("/:id", async (request: GetUserAuthInfoRequest, response: Respons
 })
 
 
-
-
-
-
 export {postRouter}
