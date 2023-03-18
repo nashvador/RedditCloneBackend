@@ -2,25 +2,20 @@ import { Router, Request, Response } from "express";
 import { User, Post, Comment } from "../models";
 import { sequelize } from "../util/db";
 import { GetUserAuthInfoRequest } from "../util/middleware";
+import { QueryTypes } from "sequelize";
 const postRouter = Router();
 
 postRouter.get("/", async (_request: Request, response: Response) => {
   const posts = await Post.findAll({
     attributes: { exclude: ["userId"] },
-    group: ["post.id", "user.id", "comments.id"],
     include: [
       {
         model: User,
         attributes: ["username"],
       },
-      {
-        model: Comment,
-        attributes: [
-          [sequelize.fn("COUNT", sequelize.col("comments.id")), "commentCount"],
-        ],
-      },
     ],
   });
+
   response.json(posts);
 });
 

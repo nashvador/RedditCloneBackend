@@ -1,5 +1,5 @@
-import {Model, DataTypes} from "sequelize"
-import { sequelize } from "../util/db"
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "../util/db";
 
 class Post extends Model {
   id: number;
@@ -7,9 +7,11 @@ class Post extends Model {
   upVotes: number;
   postContent: string;
   userId: number;
+  commentCount: number;
 }
 
-Post.init(  {
+Post.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -19,33 +21,36 @@ Post.init(  {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
-      field: 'post_title',
-
+      field: "post_title",
     },
     upVotes: {
-        type: DataTypes.INTEGER,
-        field: 'up_votes'
+      type: DataTypes.INTEGER,
+      field: "up_votes",
     },
     postContent: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        field: 'post_content'
+      type: DataTypes.TEXT,
+      allowNull: false,
+      field: "post_content",
     },
     createdAt: {
-      field: 'created_at',
-      type: DataTypes.DATE,
-  },
-  updatedAt: {
-      field: 'updated_at',
+      field: "created_at",
       type: DataTypes.DATE,
     },
-    
-    userId : {
+    updatedAt: {
+      field: "updated_at",
+      type: DataTypes.DATE,
+    },
+    commentCount: {
+      field: "comment_count",
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    userId: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
-        key: 'id'
-      }
+        model: "user",
+        key: "id",
+      },
     },
   },
   {
@@ -53,6 +58,7 @@ Post.init(  {
     underscored: true,
     timestamps: true,
     modelName: "post",
-  })
+  }
+);
 
-  export {Post}
+export { Post };
