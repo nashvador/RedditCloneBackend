@@ -85,7 +85,18 @@ commentRouter.get(
 );
 
 commentRouter.get("/:id", async (request: Request, response: Response) => {
-  const comment = await Comment.findByPk(request.params.id);
+  const comment = await Comment.findByPk(request.params.id, {
+    include: [
+      {
+        model: Post,
+        attributes: ["postTitle"],
+      },
+      {
+        model: User,
+        attributes: ["username"],
+      },
+    ],
+  });
   response.json(comment);
 });
 

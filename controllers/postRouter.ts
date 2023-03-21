@@ -37,16 +37,27 @@ postRouter.get("/:id", async (request: Request, response: Response) => {
   response.json(posts);
 });
 
+postRouter.get("/userId/:id", async (request: Request, response: Response) => {
+  const posts = await Post.findAll({
+    include: {
+      model: User,
+      attributes: ["username"],
+      where: { username: request.params.id },
+    },
+  });
+  response.json(posts);
+});
+
 postRouter.post(
   "/",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const body = request.body;
+    const { postTitle, postContent } = request.body;
     const user = request.user;
 
     const newPost = await Post.create({
-      postTitle: body.title,
+      postTitle: postTitle,
       upVotes: 0,
-      postContent: body.content,
+      postContent: postContent,
       userId: user?.dataValues.id,
     });
 
