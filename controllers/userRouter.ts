@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
 import { User, Post } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 const userRouter = Router();
 
 userRouter.get("/", async (_request: Request, response: Response) => {
@@ -55,7 +56,21 @@ userRouter.post("/", async (request: Request, response: Response) => {
     password: passwordHash,
   });
 
-  response.json(savedUser);
+  const userForToken = {
+    username: savedUser.username,
+    id: savedUser.id,
+  };
+
+  const token = jwt.sign(userForToken, process.env.SECRET!);
+  response
+    .status(200)
+    .send({
+      token,
+      username: savedUser.username,
+      name: savedUser.name,
+      admin: savedUser.admin,
+      disabled: savedUser.disabled,
+    });
 });
 
 userRouter.put(
