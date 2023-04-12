@@ -1,11 +1,10 @@
 import { Router, Request, Response } from "express";
-import { User, Post, Comment } from "../models";
-import { sequelize } from "../util/db";
+import { User, Post, Like } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
-import { QueryTypes } from "sequelize";
 const postRouter = Router();
 
 postRouter.get("/", async (_request: Request, response: Response) => {
+  // Just do a where query for users (which one they've liked)
   const posts = await Post.findAll({
     attributes: { exclude: ["userId"] },
     include: [
@@ -15,7 +14,6 @@ postRouter.get("/", async (_request: Request, response: Response) => {
       },
     ],
   });
-
   response.json(posts);
 });
 
@@ -24,7 +22,8 @@ postRouter.get("/:id", async (request: Request, response: Response) => {
     attributes: { exclude: ["userId"] },
     include: [
       {
-        model: Comment,
+        model: Like,
+        attributes: ["likeOrDislike", "userId"],
         include: [
           {
             model: User,
@@ -54,6 +53,15 @@ postRouter.post(
     const { postTitle, postContent } = request.body;
     const user = request.user;
 
+    if (postTitle.length === 0) {
+      return response.status(400).json({ error: "You must have a title!" });
+    }
+    if (postContent.length === 0) {
+      return response
+        .status(400)
+        .json({ error: "You must have some post content!" });
+    }
+
     const newPost = await Post.create({
       postTitle: postTitle,
       upVotes: 0,
@@ -61,7 +69,7 @@ postRouter.post(
       userId: user?.dataValues.id,
     });
 
-    response.json(newPost);
+    response.status(201).json(newPost);
   }
 );
 
