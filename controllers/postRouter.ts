@@ -17,7 +17,7 @@ postRouter.get(
         },
         {
           model: Like,
-          attributes: ["likeOrDislike", "userId"],
+          attributes: ["likeOrDislike"],
           where: { userId: user.dataValues.id },
           required: false,
         },
@@ -30,7 +30,7 @@ postRouter.get(
         },
       ];
     }
-    const posts = await Post.findAll({
+    const posts: Post[] = await Post.findAll({
       attributes: { exclude: ["userId"] },
       include: userLikeModel,
     });
@@ -71,8 +71,11 @@ postRouter.get("/userId/:id", async (request: Request, response: Response) => {
 postRouter.post(
   "/",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const { postTitle, postContent } = request.body;
-    const user = request.user;
+    const {
+      postTitle,
+      postContent,
+    }: { postTitle: string; postContent: string } = request.body;
+    const user: User | null | undefined = request.user;
 
     if (postTitle.length === 0) {
       return response.status(400).json({ error: "You must have a title!" });
@@ -83,7 +86,7 @@ postRouter.post(
         .json({ error: "You must have some post content!" });
     }
 
-    const newPost = await Post.create({
+    const newPost: Post = await Post.create({
       postTitle: postTitle,
       upVotes: 0,
       postContent: postContent,

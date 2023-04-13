@@ -6,7 +6,7 @@ const likeRouter = Router();
 likeRouter.get(
   "/upvoted",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const likedPostsAndComments = await Like.findAll({
       where: { userId: requestingUserId, likeOrDislike: true },
     });
@@ -17,7 +17,7 @@ likeRouter.get(
 likeRouter.get(
   "/downvoted",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const dislikedPostsAndComments = await Like.findAll({
       where: { userId: requestingUserId, likeOrDislike: false },
     });
@@ -29,7 +29,7 @@ likeRouter.post(
   "/postIdUpVote/:id",
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const postId = request.params.id;
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const LikedPost = await Like.findOne({
       where: { postId: postId, userId: requestingUserId },
     });
@@ -72,7 +72,7 @@ likeRouter.post(
   "/commentIdUpVote/:id",
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const commentId = request.params.id;
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const LikedComment = await Like.findOne({
       where: { commentId: commentId, userId: requestingUserId },
     });
@@ -115,7 +115,7 @@ likeRouter.post(
   "/postIdDownVote/:id",
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const postId = request.params.id;
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const LikedPost = await Like.findOne({
       where: { postId: postId, userId: requestingUserId },
     });
@@ -158,7 +158,7 @@ likeRouter.post(
   "/commentIdDownVote/:id",
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const commentId = request.params.id;
-    const requestingUserId = request.user?.dataValues.id;
+    const requestingUserId: number | undefined = request.user?.dataValues.id;
     const LikedComment = await Like.findOne({
       where: { commentId: commentId, userId: requestingUserId },
     });
