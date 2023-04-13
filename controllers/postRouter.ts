@@ -3,19 +3,40 @@ import { User, Post, Like } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
 const postRouter = Router();
 
-postRouter.get("/", async (_request: Request, response: Response) => {
-  // Just do a where query for users (which one they've liked)
-  const posts = await Post.findAll({
-    attributes: { exclude: ["userId"] },
-    include: [
-      {
-        model: User,
-        attributes: ["username"],
-      },
-    ],
-  });
-  response.json(posts);
-});
+postRouter.get(
+  "/",
+  async (request: GetUserAuthInfoRequest, response: Response) => {
+    const user: User | null | undefined = request.user;
+    let userLikeModel = [];
+
+    if (user) {
+      userLikeModel = [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        {
+          model: Like,
+          attributes: ["likeOrDislike", "userId"],
+          where: { userId: user.dataValues.id },
+          required: false,
+        },
+      ];
+    } else {
+      userLikeModel = [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ];
+    }
+    const posts = await Post.findAll({
+      attributes: { exclude: ["userId"] },
+      include: userLikeModel,
+    });
+    response.json(posts);
+  }
+);
 
 postRouter.get("/:id", async (request: Request, response: Response) => {
   const posts = await Post.findByPk(request.params.id, {
