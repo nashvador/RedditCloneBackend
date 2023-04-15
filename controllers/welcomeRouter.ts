@@ -3,7 +3,7 @@ const welcomeRouter = Router();
 
 welcomeRouter.get("/", async (_request: Request, response: Response) => {
   response.send(
-    "Hello, welcome to the backend of my Reddit clone application."
+    "Hello, welcome to the backend of my Reddit clone application. Welcome to Feddit!"
   );
 });
 

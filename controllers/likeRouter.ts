@@ -1,4 +1,4 @@
-import e, { Router, Request, Response } from "express";
+import { Router, Response } from "express";
 import { User, Post, Comment, Like } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
 const likeRouter = Router();
@@ -43,7 +43,7 @@ likeRouter.post(
         await LikedPost.destroy();
         referringPost!.upVotes--;
         await referringPost?.save();
-        response.status(404).end();
+        response.status(201).end();
       } else {
         creatorOfPost!.postKarma += 2;
         await creatorOfPost?.save();
@@ -51,7 +51,7 @@ likeRouter.post(
         await LikedPost.save();
         referringPost!.upVotes += 2;
         await referringPost?.save();
-        response.status(404).end();
+        response.status(201).end();
       }
     } else {
       const newLikedPost = await Like.create({
@@ -86,7 +86,7 @@ likeRouter.post(
         await LikedComment.destroy();
         referringComment!.upVotes--;
         await referringComment?.save();
-        response.status(404).end();
+        response.status(201).end();
       } else {
         creatorOfComment!.postKarma += 2;
         await creatorOfComment?.save();
@@ -94,7 +94,7 @@ likeRouter.post(
         await LikedComment.save();
         referringComment!.upVotes += 2;
         await referringComment?.save();
-        response.status(404).end();
+        response.status(201).end();
       }
     } else {
       const newLikedComment = await Like.create({
@@ -130,14 +130,14 @@ likeRouter.post(
         await LikedPost.save();
         referringPost!.upVotes -= 2;
         await referringPost?.save();
-        response.status(404).end();
+        response.status(201).end();
       } else {
         creatorOfPost!.postKarma++;
         await creatorOfPost?.save();
         await LikedPost.destroy();
         referringPost!.upVotes++;
         await referringPost?.save();
-        response.status(404).end();
+        response.status(201).end();
       }
     } else {
       const newLikedPost = await Like.create({

@@ -62,15 +62,13 @@ userRouter.post("/", async (request: Request, response: Response) => {
   };
 
   const token = jwt.sign(userForToken, process.env.SECRET!);
-  response
-    .status(200)
-    .send({
-      token,
-      username: savedUser.username,
-      name: savedUser.name,
-      admin: savedUser.admin,
-      disabled: savedUser.disabled,
-    });
+  response.status(200).send({
+    token,
+    username: savedUser.username,
+    name: savedUser.name,
+    admin: savedUser.admin,
+    disabled: savedUser.disabled,
+  });
 });
 
 userRouter.put(
@@ -101,7 +99,7 @@ userRouter.put(
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const userToAddTag = await User.findByPk(request.params.id);
     const userRequesting = request.user;
-    const tag = request.body.tag;
+    const tag: string = request.body.tag;
 
     if (userToAddTag && userToAddTag?.id == userRequesting?.dataValues.id) {
       userToAddTag.tag = tag;
