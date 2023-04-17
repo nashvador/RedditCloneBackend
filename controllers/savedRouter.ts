@@ -6,7 +6,7 @@ const savedRouter = Router();
 savedRouter.get(
   "/",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const userId = request.user?.dataValues.id;
+    const userId: number | undefined = request.user?.dataValues.id;
 
     const savedPostsAndComments = await Saved.findAll({
       where: { userId: userId },
