@@ -116,7 +116,7 @@ userRouter.put(
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const userToAddTag = await User.findByPk(request.params.id);
     const userRequesting = request.user;
-    const tag = request.body.tag;
+    const tag : string = request.body.tag;
 
     if (userToAddTag && userToAddTag?.id == userRequesting?.dataValues.id) {
       userToAddTag.tag = tag;

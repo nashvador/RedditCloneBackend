@@ -1,13 +1,51 @@
 import { Router, Request, Response } from "express";
 import { User, Post, Like } from "../models";
 import { GetUserAuthInfoRequest } from "../util/middleware";
+import { Op, OrderItem } from "sequelize";
 const postRouter = Router();
+
+type UserLikeModel =
+  | Array<
+      | {
+          model: typeof User;
+          attributes: string[];
+        }
+      | {
+          model: typeof Like;
+          attributes: string[];
+          where: { userId: number };
+          required: boolean;
+        }
+    >
+  | [];
+
+type wherePost = {
+  postTitle: Record<string, string>;
+};
 
 postRouter.get(
   "/",
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const user: User | null | undefined = request.user;
-    let userLikeModel = [];
+    let userLikeModel: UserLikeModel = [];
+    const where: Partial<wherePost> = {};
+    let orderArray: OrderItem = ["created_at", "desc"];
+
+    if (request.query.search) {
+      where.postTitle = {
+        [Op.substring]: request.query.search,
+      };
+    }
+
+    if (request.query.order) {
+      if (request.query.order === "likes") {
+        orderArray = ["up_votes", "desc"];
+      } else if (request.query.order === "latest") {
+        orderArray = ["created_at", "asc"];
+      } else if (request.query.order === "comment") {
+        orderArray = ["comment_count", "desc"];
+      }
+    }
 
     if (user) {
       userLikeModel = [
@@ -32,7 +70,9 @@ postRouter.get(
     }
     const posts: Post[] = await Post.findAll({
       attributes: { exclude: ["userId"] },
+      where,
       include: userLikeModel,
+      order: [orderArray],
     });
     response.json(posts);
   }
@@ -119,7 +159,7 @@ postRouter.put(
   async (request: GetUserAuthInfoRequest, response: Response) => {
     const post: Post | null = await Post.findByPk(request.params.id);
     const user = request.user;
-    const { content } = request.body;
+    const { content }: { content: string } = request.body;
 
     if (post && post?.userId === user?.dataValues.id) {
       post.postContent = content;
