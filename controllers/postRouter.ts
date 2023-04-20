@@ -37,6 +37,7 @@ postRouter.get(
       };
     }
 
+    // use switch case for this
     if (request.query.order) {
       if (request.query.order === "likes") {
         orderArray = ["up_votes", "desc"];
@@ -44,6 +45,8 @@ postRouter.get(
         orderArray = ["created_at", "asc"];
       } else if (request.query.order === "comment") {
         orderArray = ["comment_count", "desc"];
+      } else if (request.query.order === "earliest") {
+        orderArray = ["created_at", "desc"];
       }
     }
 
@@ -163,6 +166,7 @@ postRouter.put(
 
     if (post && post?.userId === user?.dataValues.id) {
       post.postContent = content;
+      post.edited = true;
       await post.save();
       response.json(post);
     }

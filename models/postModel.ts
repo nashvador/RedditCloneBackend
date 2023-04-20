@@ -8,6 +8,7 @@ class Post extends Model {
   postContent: string;
   userId: number;
   commentCount: number;
+  edited: boolean;
 }
 
 Post.init(
@@ -39,6 +40,10 @@ Post.init(
     updatedAt: {
       field: "updated_at",
       type: DataTypes.DATE,
+    },
+    edited: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     commentCount: {
       field: "comment_count",
