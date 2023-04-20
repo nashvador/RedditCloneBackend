@@ -3,36 +3,32 @@ import { Post } from "./postModel";
 import { Comment } from "./commentModel";
 import { Saved } from "./savedModel";
 import { Like } from "./likeModel";
-import { Message } from "./messageModel";
 
-User.hasMany(Post)
-Post.belongsTo(User)
+User.hasMany(Post);
+Post.belongsTo(User);
 
-User.hasMany(Comment)
-Comment.belongsTo(User)
+User.hasMany(Comment);
+Comment.belongsTo(User);
 
-Post.hasMany(Comment)
-Comment.belongsTo(Post)
+Post.hasMany(Comment);
+Comment.belongsTo(Post);
 
-User.hasMany(Saved)
-Saved.belongsTo(User)
+User.hasMany(Saved);
+Saved.belongsTo(User);
 
-Comment.hasMany(Saved)
-Saved.belongsTo(Comment)
+Comment.hasMany(Saved);
+Saved.belongsTo(Comment);
 
-Post.hasMany(Saved)
-Saved.belongsTo(Post)
+Post.hasMany(Saved);
+Saved.belongsTo(Post);
 
-User.hasMany(Like)
-Like.belongsTo(User)
+User.hasMany(Like);
+Like.belongsTo(User);
 
-Comment.hasMany(Like)
-Like.belongsTo(Comment)
+Comment.hasMany(Like);
+Like.belongsTo(Comment);
 
-Post.hasMany(Like)
-Like.belongsTo(Post)
+Post.hasMany(Like);
+Like.belongsTo(Post);
 
-User.hasMany(Message)
-Message.belongsTo(User)
-
-export {User, Post, Comment, Saved, Like, Message}
+export { User, Post, Comment, Saved, Like };

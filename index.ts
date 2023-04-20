@@ -1,4 +1,5 @@
 import express from "express";
+import http, { Server } from "http";
 import { connectionToDatabase } from "./util/db";
 import { PORT } from "./util/config";
 import { welcomeRouter } from "./controllers/welcomeRouter";
@@ -16,8 +17,10 @@ import {
   userExtractor,
 } from "./util/middleware";
 import cors from "cors";
+import socketServer from "./socketServer";
 
 const app = express();
+const server: Server = http.createServer(app);
 
 app.use(cors());
 app.use(express.json());
@@ -37,9 +40,11 @@ app.use("/api/like", likeRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
+socketServer(server);
+
 const start = async () => {
   await connectionToDatabase();
-  app.listen(PORT, () => {
+  server.listen(PORT, (): void => {
     console.log(`Server running on port ${PORT}`);
   });
 };
