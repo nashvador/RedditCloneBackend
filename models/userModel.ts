@@ -1,11 +1,10 @@
-import { LargeNumberLike } from "crypto";
-import {Model, DataTypes} from "sequelize"
-import { sequelize } from "../util/db"
+import { Model, DataTypes } from "sequelize";
+import { sequelize } from "../util/db";
 
 class User extends Model {
   password: string;
   username: string;
-  name: string
+  name: string;
   id: number;
   disabled: boolean;
   admin: boolean;
@@ -14,7 +13,8 @@ class User extends Model {
   commentKarma: number;
 }
 
-User.init(  {
+User.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -38,45 +38,43 @@ User.init(  {
     },
     admin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     },
     disabled: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: false,
     },
     createdAt: {
-      field: 'created_at',
+      field: "created_at",
       type: DataTypes.DATE,
     },
     updatedAt: {
-      field: 'updated_at',
+      field: "updated_at",
       type: DataTypes.DATE,
     },
     commentKarma: {
-      field: 'comment_karma',
+      field: "comment_karma",
       defaultValue: 0,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
     postKarma: {
-      field: 'post_karma',
+      field: "post_karma",
       defaultValue: 0,
-      type: DataTypes.INTEGER
-    }
-
+      type: DataTypes.INTEGER,
+    },
   },
   {
     sequelize,
     underscored: true,
     timestamps: true,
     modelName: "user",
-    
-  })
-
-
-  User.prototype.toJSON =  function () {
-    let values = Object.assign({}, this.get());
-    delete values.password;
-    return values;
   }
+);
 
-  export {User}
+User.prototype.toJSON = function () {
+  let values = Object.assign({}, this.get());
+  delete values.password;
+  return values;
+};
+
+export { User };
