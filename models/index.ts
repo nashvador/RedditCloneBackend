@@ -3,6 +3,8 @@ import { Post } from "./postModel";
 import { Comment } from "./commentModel";
 import { Saved } from "./savedModel";
 import { Like } from "./likeModel";
+import { Chat } from "./chatModel";
+import { Message } from "./messageModel";
 
 User.hasMany(Post);
 Post.belongsTo(User);
@@ -31,4 +33,9 @@ Like.belongsTo(Comment);
 Post.hasMany(Like);
 Like.belongsTo(Post);
 
-export { User, Post, Comment, Saved, Like };
+User.belongsToMany(Chat, { through: "user_chats" });
+Chat.belongsToMany(User, { through: "user_chats" });
+Chat.hasMany(Message);
+Message.belongsTo(Chat);
+
+export { User, Post, Comment, Saved, Like, Chat, Message };
