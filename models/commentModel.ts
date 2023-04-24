@@ -6,6 +6,7 @@ class Comment extends Model {
   id: number;
   upVotes: number;
   userId: number;
+  commentRespondToId: number;
 }
 
 Comment.init(

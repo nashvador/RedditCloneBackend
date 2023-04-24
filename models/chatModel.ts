@@ -16,24 +16,6 @@ Chat.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    userId1: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field: "user_id1",
-      references: {
-        model: "user",
-        key: "id",
-      },
-    },
-    userId2: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field: "user_id2",
-      references: {
-        model: "user",
-        key: "id",
-      },
-    },
     createdAt: {
       field: "created_at",
       type: DataTypes.DATE,

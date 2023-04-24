@@ -5,8 +5,8 @@ import { AllowNull } from "sequelize-typescript";
 class Message extends Model {
   public id!: number;
   public senderId!: number;
-  public recipientId!: number;
   public content!: string;
+  public chatId!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -27,12 +27,12 @@ Message.init(
         key: "id",
       },
     },
-    recipientId: {
+    chatId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field: "recipient_id",
+      field: "chat_id",
       references: {
-        model: "user",
+        model: "chat",
         key: "id",
       },
     },
