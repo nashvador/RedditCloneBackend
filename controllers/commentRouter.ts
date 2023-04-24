@@ -55,34 +55,53 @@ commentRouter.post(
 commentRouter.get(
   "/postId/:id",
   async (request: GetUserAuthInfoRequest, response: Response) => {
-    const rootComments = await Comment.findAll({
-      where: { postId: request.params.id, commentRespondToId: null },
-    });
+    const postId = request.params.id;
 
-    let originalQ = [];
+    try {
+      const comments = await Comment.findAll({
+        where: {
+          postId: postId,
+        },
+        include: {
+          model: User,
+          attributes: ["username"],
+        },
+      });
 
-    if (rootComments) {
-      for (let i = 0; i < rootComments.length; i++) {
-        let queue: any = [];
-        let commentStore = [];
-        queue.push(rootComments[i]);
-        while (queue.length > 0) {
-          let currentNode: any = queue[0];
-          const otherComment = await Comment.findAll({
-            where: { commentRespondToId: currentNode.dataValues.id },
-          });
-          commentStore.push(currentNode);
-          queue.shift();
-          if (otherComment) {
-            queue = [...queue, ...otherComment];
-          } else {
-            continue;
-          }
-        }
-        originalQ.push(commentStore);
-      }
+      const commentGroups: Record<string, Comment[]> = comments.reduce(
+        (acc: Record<string, Comment[]>, comment: Comment) => {
+          const parentId: string =
+            comment.commentRespondToId?.toString() ?? "topLevel";
+          acc[parentId] = acc[parentId] || [];
+          acc[parentId].push(comment.toJSON() as Comment);
+          return acc;
+        },
+        {}
+      );
+
+      const buildCommentTree = (
+        commentGroup: Record<string, Comment[]>,
+        parentCommentId: string
+      ): Comment[] => {
+        const nestedComments: Comment[] = commentGroup[parentCommentId] || [];
+
+        nestedComments.forEach((comment: any) => {
+          comment.replies = buildCommentTree(
+            commentGroup,
+            comment.id.toString()
+          );
+        });
+
+        return nestedComments;
+      };
+
+      const commentTree = buildCommentTree(commentGroups, "topLevel");
+
+      response.status(200).json(commentTree);
+    } catch (error) {
+      console.error(error);
+      response.status(500).send("Internal server error");
     }
-    response.json(originalQ);
   }
 );
 
