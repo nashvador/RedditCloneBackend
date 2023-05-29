@@ -7,6 +7,7 @@ class Comment extends Model {
   upVotes: number;
   userId: number;
   commentRespondToId: number;
+  edited: boolean;
 }
 
 Comment.init(
@@ -35,7 +36,10 @@ Comment.init(
       field: "updated_at",
       type: DataTypes.DATE,
     },
-
+    edited: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     userId: {
       type: DataTypes.INTEGER,
       references: {

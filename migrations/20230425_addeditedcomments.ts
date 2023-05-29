@@ -2,12 +2,12 @@ import { DataTypes } from "sequelize";
 
 module.exports = {
   up: async ({ context: queryInterface }: { context: any }) => {
-    await queryInterface.addColumn("posts", "edited", {
+    await queryInterface.addColumn("comments", "edited", {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     });
   },
   down: async ({ context: queryInterface }: { context: any }) => {
-    await queryInterface.removeColumn("posts", "edited");
+    await queryInterface.removeColumn("comments", "edited");
   },
 };
