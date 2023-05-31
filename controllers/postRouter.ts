@@ -71,6 +71,7 @@ postRouter.get(
         },
       ];
     }
+
     const posts: Post[] = await Post.findAll({
       attributes: { exclude: ["userId"] },
       where,
@@ -81,24 +82,44 @@ postRouter.get(
   }
 );
 
-postRouter.get("/:id", async (request: Request, response: Response) => {
-  const posts = await Post.findByPk(request.params.id, {
-    attributes: { exclude: ["userId"] },
-    include: [
-      {
-        model: Like,
-        attributes: ["likeOrDislike", "userId"],
-        include: [
-          {
-            model: User,
-            attributes: ["username"],
-          },
-        ],
-      },
-    ],
-  });
-  response.json(posts);
-});
+postRouter.get(
+  "/:id",
+  async (request: GetUserAuthInfoRequest, response: Response) => {
+    const user: User | null | undefined = request.user;
+    let userLikeModel: UserLikeModel = [];
+
+    if (user) {
+      userLikeModel = [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+        {
+          model: Like,
+          attributes: ["likeOrDislike"],
+          where: { userId: user.dataValues.id },
+          required: false,
+        },
+      ];
+    } else {
+      userLikeModel = [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ];
+    }
+
+    const posts = await Post.findByPk(request.params.id, {
+      attributes: { exclude: ["userId"] },
+      include: userLikeModel,
+    });
+    if (!posts) {
+      return response.status(404).json({ error: "No such post exists!" });
+    }
+    response.json(posts);
+  }
+);
 
 postRouter.get("/userId/:id", async (request: Request, response: Response) => {
   const posts = await Post.findAll({
